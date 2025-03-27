@@ -1,6 +1,5 @@
 // Usa rutas relativas correctas
-import { initThreeBackground } from './three-background.js';
-import { initProjectGallery } from './project-gallery-3d.js';
+
 import { initSkillsBubbles } from './skills-bubbles.js';
 
 export function initSkillsBubbles(containerId, skills) {
