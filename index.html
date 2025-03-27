@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Portafolio Dinámico</title>
+    <title>Mi Portafolio Dinámico 3D</title>
     <link rel="stylesheet" href="css/styles.css">
+    <!-- Importar Three.js desde CDN -->
 </head>
 <body>
     <header>
-        <h1 id="main-title">Mi Portafolio</h1>
+        <h1 id="main-title" class="glow-text">Mi Portafolio</h1>
         <nav>
             <ul>
                 <li><a href="#proyectos">Proyectos</a></li>
@@ -19,128 +20,235 @@
     </header>
 
     <main>
-        <section id="proyectos">
-            <h2>Proyectos</h2>
-            <div class="categoria-proyectos">
-                <h3>Menús de Restaurantes</h3>
-                <div class="grid-proyectos">
-                    <div class="proyecto">
-                        <img src="assets/img/menu-restaurantes/menu-ejemplo-1.jpg" alt="Menú Ejemplo 1">
-                        <p class="titulo-descripcion"> "Transforma la experiencia de tus clientes con menús digitales interactivos y visualmente impactantes. Diseño personalizado con imágenes de alta calidad y animaciones sutiles que resaltan tus platos estrella."</p>
-                        </div>
-                    </div>
+        <!-- Sección de Proyectos con espacio para Galería 3D -->
+        <section id="proyectos" class="glassmorphism">
+            <h2 class="gradient-text">Mis Proyectos</h2>
+            <!-- Aquí se insertará la galería 3D -->
+            
+           <!-- Sección de tarjetas 3D con efecto flip -->
+<div class="cartas-3d-container">
+    <!-- Carta 1: Menús Digitales -->
+    <div class="carta-3d">
+      <div class="carta-3d-inner">
+        <!-- Frente de la carta -->
+        <div class="carta-3d-front">
+          <div class="carta-3d-icon">🍽️</div>
+          <div class="carta-3d-title">Menús Digitales</div>
+          <div class="carta-3d-description">
+            Transforma la experiencia de tus clientes con menús digitales interactivos y visualmente impactantes. 
+            Diseño personalizado con imágenes de alta calidad y animaciones sutiles que resaltan tus platos estrella.
+          </div>
+          <div class="carta-3d-footer">
+            <span class="ver-ejemplos-btn">Ver ejemplos →</span>
+          </div>
+        </div>
+        
+        <!-- Reverso de la carta con ejemplos -->
+        <div class="carta-3d-back">
+          <div class="carta-3d-back-title">Ejemplos de Menús Digitales</div>
+          <div class="ejemplos-container">
+            <div class="ejemplo-item">
+              <img src="assets/img/menu-restaurantes/menu-ejemplo-1.jpg" alt="Menú ejemplo 1">
+              <h4>Menú Gourmet Interactivo</h4>
+              <p>Menú con animaciones sutiles que resaltan los platos destacados y opciones de filtrado por categorías.</p>
             </div>
-
-            <div class="categoria-proyectos">
-                <h3>Aplicaciones Móviles (AppSheet)</h3>
-                <div class="grid-proyectos">
-                    <div class="proyecto">
-                        <img src="assets/img/apps-appsheet/app-ejemplo-1.png" alt="App AppSheet Ejemplo 1">
-                        <p class="titulo-descripcion">"Desarrollo de aplicaciones móviles personalizadas con AppSheet que se adaptan a tus necesidades operativas. Desde gestión de almacenes y toma de inventario hasta formularios dinámicos con registro fotográfico, optimiza tus procesos."</p>
-                        </div>
-                    </div>
+            <div class="ejemplo-item">
+              <img src="assets/img/menu-restaurantes/menu-ejemplo-1.jpg" alt="Menú ejemplo 2">
+              <h4>Menú Digital con QR</h4>
+              <p>Sistema de menú accesible por código QR, con posibilidad de actualización en tiempo real.</p>
             </div>
-
-            <div class="categoria-proyectos">
-                <h3>Aplicaciones Web (Firebase)</h3>
-                <div class="grid-proyectos">
-                    <div class="proyecto">
-                        <img src="assets/img/web-firebase/web-ejemplo-1.png" alt="Web Firebase Ejemplo 1">
-                        <p class="titulo-descripcion">"Construyo aplicaciones web escalables y con un diseño impactante gracias a la potencia de Firebase. Funcionalidades completas y estilos visuales que marcan la diferencia."</p>
-                        <a href="https://sinsapiar1.github.io/control-almacen/" target="_blank">Ver Demo</a>
-                    </div>
-                    </div>
+          </div>
+          <a href="#" class="volver-btn">← Volver</a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Carta 2: Aplicaciones Móviles -->
+    <div class="carta-3d">
+      <div class="carta-3d-inner">
+        <!-- Frente de la carta -->
+        <div class="carta-3d-front">
+          <div class="carta-3d-icon">📱</div>
+          <div class="carta-3d-title">Apps Móviles</div>
+          <div class="carta-3d-description">
+            Desarrollo de aplicaciones móviles personalizadas con AppSheet que se adaptan a tus necesidades operativas. 
+            Desde gestión de almacenes hasta formularios dinámicos con registro fotográfico.
+          </div>
+          <div class="carta-3d-footer">
+            <span class="ver-ejemplos-btn">Ver ejemplos →</span>
+          </div>
+        </div>
+        
+        <!-- Reverso de la carta con ejemplos -->
+        <div class="carta-3d-back">
+          <div class="carta-3d-back-title">Ejemplos de Apps Móviles</div>
+          <div class="ejemplos-container">
+            <div class="ejemplo-item">
+              <img src="assets/img/apps-appsheet/app-ejemplo-1.png" alt="App ejemplo 1">
+              <h4>Inventario Móvil</h4>
+              <p>Aplicación para gestión de almacén con escáner de código de barras y registro fotográfico de productos.</p>
             </div>
+            <div class="ejemplo-item">
+              <img src="assets/img/apps-appsheet/app-ejemplo-1.png" alt="App ejemplo 2">
+              <h4>Sistema de Pedidos</h4>
+              <p>App para la gestión y seguimiento de pedidos con notificaciones en tiempo real y dashboard de análisis.</p>
+            </div>
+          </div>
+          <a href="#" class="volver-btn">← Volver</a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Carta 3: Aplicaciones Web -->
+    <div class="carta-3d">
+      <div class="carta-3d-inner">
+        <!-- Frente de la carta -->
+        <div class="carta-3d-front">
+          <div class="carta-3d-icon">🌐</div>
+          <div class="carta-3d-title">Apps Web</div>
+          <div class="carta-3d-description">
+            Construyo aplicaciones web escalables y con un diseño impactante gracias a la potencia de Firebase. 
+            Funcionalidades completas y estilos visuales que marcan la diferencia en la experiencia de usuario.
+          </div>
+          <div class="carta-3d-footer">
+            <span class="ver-ejemplos-btn">Ver ejemplos →</span>
+          </div>
+        </div>
+        
+        <!-- Reverso de la carta con ejemplos -->
+        <div class="carta-3d-back">
+          <div class="carta-3d-back-title">Ejemplos de Apps Web</div>
+          <div class="ejemplos-container">
+            <div class="ejemplo-item">
+              <img src="assets/img/web-firebase/web-ejemplo-1.png" alt="Web ejemplo 1">
+              <h4>Control de Almacén</h4>
+              <p>Aplicación web con Firebase para gestión de inventario y control de almacén en tiempo real.</p>
+              <a href="https://sinsapiar1.github.io/control-almacen/" target="_blank" style="color: #1976d2; font-size: 12px;">Ver demo</a>
+            </div>
+            <div class="ejemplo-item">
+              <img src="assets/img/web-firebase/web-ejemplo-1.png" alt="Web ejemplo 2">
+              <h4>Dashboard de Análisis</h4>
+              <p>Panel de control para visualización y análisis de datos con gráficos interactivos.</p>
+            </div>
+          </div>
+          <a href="#" class="volver-btn">← Volver</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
             <div class="categoria-proyectos">
                 <h3>Sistematizaciones (Google & Office)</h3>
                 <div class="grid-proyectos">
-                    <div class="proyecto">
+                    <div class="proyecto float-animation">
                         <h4>Automatización de Reportes en Google Sheets</h4>
-                        <p>Descripción de la automatización y las herramientas utilizadas (Google Apps Script, etc.)</p>
-                        </div>
+                        <p>Automatización de procesos con Google Apps Script, conectando datos entre diferentes plataformas y generando reportes personalizados. Optimiza el tiempo y reduce errores en tus operaciones diarias.</p>
                     </div>
+                </div>
             </div>
 
             <div class="categoria-proyectos">
                 <h3>Programas en Python</h3>
                 <div class="grid-proyectos">
-                    <div class="proyecto">
+                    <div class="proyecto float-animation">
                         <h4>Herramienta de Análisis de Datos con Python</h4>
-                        <p>Descripción del programa y las librerías utilizadas (Pandas, NumPy, etc.)</p>
-                        </div>
-                    </div>
-            </div>
-        </section>
-        <section id="blogs">
-            <h2>Blogs y Creación de Contenido</h2>
-            <div class="grid-blogs">
-                <div class="blog-proyecto">
-                    <h3>Blogs de Presentación con Integración a Redes Sociales</h3>
-                    <p>Desarrollo blogs visualmente atractivos, ideales para presentar proyectos o eventos. Incorporo galerías de fotografías impactantes y los vinculo estratégicamente con tus perfiles en redes sociales para ampliar su alcance.</p>
-                    </div>
-                <div class="blog-proyecto">
-                    <h3>Blogs Personales para Promoción de Productos</h3>
-                    <p>Creo blogs personales diseñados para destacar productos de tiendas en línea. A través de contenido relevante y persuasivo, busco conectar con la audiencia y fomentar las ventas.</p>
+                        <p>Desarrollo de soluciones para el análisis de grandes volúmenes de datos utilizando Python con librerías como Pandas, NumPy y Matplotlib. Visualización de datos que facilita la toma de decisiones estratégicas.</p>
                     </div>
                 </div>
+            </div>
         </section>
 
-        
-        <section id="paginas">
-            <h2>Mis Páginas Web</h2>
+        <!-- Sección de Blogs -->
+        <section id="blogs" class="glassmorphism">
+            <h2 class="gradient-text">Blogs y Creación de Contenido</h2>
+            <div class="grid-blogs">
+                <div class="blog-proyecto float-animation">
+                    <h3>Blogs de Presentación con Integración a Redes Sociales</h3>
+                    <p>Desarrollo blogs visualmente atractivos, ideales para presentar proyectos o eventos. Incorporo galerías de fotografías impactantes y los vinculo estratégicamente con tus perfiles en redes sociales para ampliar su alcance.</p>
+                </div>
+                <div class="blog-proyecto float-animation">
+                    <h3>Blogs Personales para Promoción de Productos</h3>
+                    <p>Creo blogs personales diseñados para destacar productos de tiendas en línea. A través de contenido relevante y persuasivo, busco conectar con la audiencia y fomentar las ventas.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Páginas Web -->
+        <section id="paginas" class="glassmorphism">
+            <h2 class="gradient-text">Mis Páginas Web</h2>
             <div class="sub-seccion">
                 <h3>Páginas Estáticas</h3>
                 <div class="grid-paginas">
-                    <div class="pagina">
+                    <div class="pagina float-animation">
                         <h4>Promoción a Taxi Móvil</h4>
                         <p>Página web estática creada para promocionar Taxi Móvil.</p>
                         <a href="https://sinsapiar1.github.io/Taximovil/" target="_blank">Ver Página</a>
                     </div>
-                    <div class="pagina">
+                    <div class="pagina float-animation">
                         <h4>Publicidad a Mi Perro</h4>
                         <p>Mi primer blog personal, una página estática dedicada a mi perro.</p>
                         <a href="https://sinsapiar1.github.io/miprimerblog/" target="_blank">Ver Página</a>
                     </div>
-                    </div>
+                </div>
             </div>
         
             <div class="sub-seccion">
                 <h3>Páginas Dinámicas</h3>
                 <div class="grid-paginas">
-                    <div class="pagina">
+                    <div class="pagina float-animation">
                         <h4>Control de Almacén (Firebase)</h4>
                         <p>Aplicación web dinámica desarrollada con Firebase para la gestión de inventario y control de almacén.</p>
-                        <a href="https://sinsapiar1.github.io/control-almacen/" target="_blank">Ver Página</a>
+                        <a href="https://sinsapiar1.github.io/Almacen/" target="_blank">Ver Página</a>
                     </div>
-                    </div>
+                </div>
             </div>
         </section>
 
-        <section id="sobre-mi">
-            <h2>Sobre Mí</h2>
-            <p>Soy un profesional versátil con más de 7 años de experiencia en logística, apasionado por la optimización y la innovación. Mi expertise abarca la creación de soluciones digitales integrales, desde el diseño de menús interactivos y el desarrollo de aplicaciones móviles personalizadas con AppSheet, hasta la construcción de aplicaciones web dinámicas con Firebase. Además, cuento con sólidas habilidades en la sistematización de procedimientos utilizando herramientas de Google y Office, y en la automatización de tareas con Python. Busco constantemente aplicar la tecnología para mejorar la eficiencia y generar valor en diversos ámbitos.</p>
+        <!-- Sección Sobre Mí con espacio para visualización 3D de habilidades -->
+        <section id="sobre-mi" class="glassmorphism">
+            <h2 class="gradient-text">Sobre Mí</h2>
+            <!-- Aquí se insertará la visualización 3D de habilidades -->
+            
+            <p>Soy un profesional versátil con más de 7 años de experiencia en logística, apasionado por la optimización y la innovación. Mi expertise abarca la creación de soluciones digitales integrales, desde el diseño de menús interactivos y el desarrollo de aplicaciones móviles personalizadas con AppSheet, hasta la construcción de aplicaciones web dinámicas con Firebase.</p>
+            
+            <p>Además, cuento con sólidas habilidades en la sistematización de procedimientos utilizando herramientas de Google y Office, y en la automatización de tareas con Python. Busco constantemente aplicar la tecnología para mejorar la eficiencia y generar valor en diversos ámbitos.</p>
+            
+            <p>Mi enfoque está en crear soluciones visuales impactantes que atraigan y retengan a los clientes, mejorando la experiencia de usuario y optimizando los procesos de negocio.</p>
         </section>
 
-        <section id="contacto">
-            <h2>Contacto</h2>
-            <p>¡No dudes en ponerte en contacto!</p>
+        <!-- Sección de Contacto -->
+        <section id="contacto" class="glassmorphism">
+            <h2 class="gradient-text">Contacto</h2>
+            <p>¡No dudes en ponerte en contacto para llevar tus ideas al siguiente nivel!</p>
             <div class="social-links">
-                <a href="https://github.com/sinsapiar1" target="_blank">
+                <a href="https://github.com/sinsapiar1" target="_blank" class="neumorphism">
                     <img src="assets/img/social-icons/github.png" alt="GitHub">
                 </a>
-                <a href="https://www.instagram.com/jaimepivet/" target="_blank">
+                <a href="https://www.instagram.com/jaimepivet/" target="_blank" class="neumorphism">
                     <img src="assets/img/social-icons/instagram.png" alt="Instagram">
                 </a>
             </div>
-            <p>También puedes enviarme un correo a: <a href="mailto:jaime.pivet@gmail.com">jaime.pivet@gmail.com</a></p>
+            <p>También puedes enviarme un correo a: <a href="mailto:jaime.pivet@gmail.com" class="glow-text">jaime.pivet@gmail.com</a></p>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 Mi Portafolio</p>
+        <p>&copy; 2025 Mi Portafolio | Diseño y Desarrollo 3D</p>
     </footer>
 
-    <script src="js/script.js"></script>
+    <!-- Scripts -->
+    <script type="module" src="js/three-background.js"></script>
+    <script type="module" src="js/project-gallery-3d.js"></script>
+    <script type="module" src="js/skills-bubbles.js"></script>
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="js/flip-cards.js"></script>
+    <script src="js/loader.js"></script>
+    <script type="module" src="js/script.js"></script>
+
+    
+    
+    
 </body>
 </html>
