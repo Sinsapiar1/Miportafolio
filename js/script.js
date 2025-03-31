@@ -10,6 +10,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const proyectoElementos = document.querySelectorAll('.proyecto, .blog-proyecto, .pagina');
     const enlacesProyecto = document.querySelectorAll('.proyecto a, .pagina a');
 
+
+
+         // Código para el desplazamiento del encabezado
+    let lastScrollPosition = window.pageYOffset;
+
+    window.addEventListener('scroll', () => {
+        const currentScrollPosition = window.pageYOffset;
+
+        if (currentScrollPosition > lastScrollPosition) {
+            // Scrolling down
+            header.classList.add('ocultar');
+            header.classList.remove('mostrar');
+        } else {
+            // Scrolling up
+            header.classList.remove('ocultar');
+            header.classList.add('mostrar');
+        }
+
+        lastScrollPosition = currentScrollPosition;
+    });
     // Inicializar fondo 3D
     const destroyBackground = initThreeBackground();
 
