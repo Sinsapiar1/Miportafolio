@@ -83,17 +83,21 @@
       const touchEndTime = Date.now();
       const deltaTime = touchEndTime - touchStartTime;
       
-      // Solo flip si es un toque rápido, no hubo movimiento significativo y no fue en contenido scrolleable
+      // Solo flip si es un toque rápido, no hubo movimiento significativo
       if (!hasMoved && deltaTime < 300) {
         const target = e.target;
-        const isScrollableContent = target.closest('.carta-3d-back .ejemplos-container');
         const isButton = target.closest('.ver-ejemplos-btn, .volver-btn');
         
-        // No hacer flip si se tocó un botón o contenido scrolleable
-        if (!isScrollableContent && !isButton) {
-          if (card.classList.contains('flipped')) {
+        // Si la carta está volteada, solo permitir flip desde el botón volver
+        if (card.classList.contains('flipped')) {
+          // En carta volteada, solo el botón volver puede hacer flip
+          if (isButton && target.closest('.volver-btn')) {
             flipCard(card, false);
-          } else {
+          }
+          // Todo lo demás debe permitir scroll
+        } else {
+          // En carta normal, cualquier toque que no sea botón puede hacer flip
+          if (!isButton) {
             flipCard(card, true);
           }
         }
@@ -120,6 +124,15 @@
     // Mejorar scroll en el contenido de la carta volteada
     if (cardBack) {
       cardBack.addEventListener('touchmove', function(e) {
+        e.stopPropagation();
+      }, { passive: true });
+      
+      // Prevenir flip cuando se está scrolleando en la carta volteada
+      cardBack.addEventListener('touchstart', function(e) {
+        e.stopPropagation();
+      }, { passive: true });
+      
+      cardBack.addEventListener('touchend', function(e) {
         e.stopPropagation();
       }, { passive: true });
     }

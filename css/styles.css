@@ -678,16 +678,20 @@ footer {
   .carta-3d-back {
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
+    overflow-y: scroll !important;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;
+    touch-action: pan-y !important;
+    height: 100%;
+    position: relative;
   }
   
   .ejemplos-container {
     flex-grow: 1;
-    overflow-y: auto;
+    overflow-y: scroll !important;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;
+    touch-action: pan-y !important;
+    min-height: 200px;
+    padding-right: 10px; /* Espacio para scrollbar */
   }
   
   /* Indicador visual para scroll */
@@ -840,8 +844,14 @@ button:focus-visible,
 
 /* Permitir scroll en el contenido de las cartas */
 .carta-3d-back {
-  touch-action: pan-y; /* Permite scroll vertical en el contenido */
+  touch-action: pan-y !important; /* Permite scroll vertical en el contenido */
   -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+  overflow-y: scroll !important;
+}
+
+/* Asegurar que todos los elementos dentro de la carta volteada permitan scroll */
+.carta-3d-back * {
+  touch-action: pan-y !important;
 }
 
 /* Mejorar área de toque en botones */
