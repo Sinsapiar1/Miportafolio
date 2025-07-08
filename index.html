@@ -260,12 +260,16 @@
     </footer>
 
     <!-- Scripts optimizados -->
+    <!-- Cargar Three.js primero -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Scripts que no dependen de Three.js -->
+    <script src="js/flip-cards.js"></script>
+    
+    <!-- Módulos que dependen de Three.js -->
     <script type="module" src="js/three-background.js"></script>
     <script type="module" src="js/project-gallery-3d.js"></script>
     <script type="module" src="js/skills-bubbles.js"></script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="js/flip-cards.js"></script>
     <script type="module" src="js/script.js"></script>
 </body>
 </html>

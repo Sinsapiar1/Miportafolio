@@ -1,6 +1,4 @@
-// Usa rutas relativas correctas
-
-import { initSkillsBubbles } from './skills-bubbles.js';
+// Visualización 3D de habilidades con burbujas flotantes
 
 export function initSkillsBubbles(containerId, skills) {
   // Verificar que exista el contenedor

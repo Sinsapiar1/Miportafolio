@@ -1,5 +1,6 @@
 // Importar módulos 3D
 import { initThreeBackground } from './three-background.js';
+import { initSkillsBubbles } from './skills-bubbles.js';
 
 // Configuración moderna del portafolio
 class ModernPortfolio {
@@ -217,8 +218,94 @@ class ModernPortfolio {
     }
 
     // Inicializar burbujas de habilidades si está disponible
-    if (typeof initSkillsBubbles === 'function') {
-      initSkillsBubbles('habilidades-3d', habilidades);
+    if (typeof initSkillsBubbles === 'function' && typeof THREE !== 'undefined') {
+      try {
+        initSkillsBubbles('habilidades-3d', habilidades);
+      } catch (error) {
+        console.warn('Error al inicializar burbujas de habilidades:', error);
+        // Fallback: mostrar habilidades de forma simple
+        this.createSimpleSkillsList(skillsContainer, habilidades);
+      }
+    } else {
+      // Fallback si Three.js no está disponible
+      this.createSimpleSkillsList(skillsContainer, habilidades);
+    }
+  }
+
+  createSimpleSkillsList(container, habilidades) {
+    // Crear visualización simple de habilidades si 3D no está disponible
+    container.innerHTML = '';
+    container.style.height = 'auto';
+    container.style.padding = '2rem';
+    
+    const grid = document.createElement('div');
+    grid.style.cssText = `
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    `;
+    
+    habilidades.forEach((skill, index) => {
+      const skillCard = document.createElement('div');
+      skillCard.style.cssText = `
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+        animation: fadeInUp 0.6s ease ${index * 0.1}s both;
+      `;
+      
+      skillCard.innerHTML = `
+        <h4 style="
+          color: var(--primary-color);
+          margin: 0 0 0.5rem 0;
+          font-size: 1.1rem;
+          font-weight: 600;
+        ">${skill.name}</h4>
+        <p style="
+          color: var(--text-secondary);
+          margin: 0;
+          font-size: 0.9rem;
+          line-height: 1.5;
+        ">${skill.description}</p>
+      `;
+      
+      // Hover effect
+      skillCard.addEventListener('mouseenter', () => {
+        skillCard.style.transform = 'translateY(-4px)';
+        skillCard.style.boxShadow = '0 10px 30px rgba(59, 130, 246, 0.2)';
+      });
+      
+      skillCard.addEventListener('mouseleave', () => {
+        skillCard.style.transform = 'translateY(0)';
+        skillCard.style.boxShadow = 'none';
+      });
+      
+      grid.appendChild(skillCard);
+    });
+    
+    container.appendChild(grid);
+    
+    // Agregar animación CSS si no existe
+    if (!document.querySelector('#skills-animations')) {
+      const style = document.createElement('style');
+      style.id = 'skills-animations';
+      style.textContent = `
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `;
+      document.head.appendChild(style);
     }
   }
 
