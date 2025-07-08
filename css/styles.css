@@ -323,53 +323,42 @@ h3 {
   transform: translateX(4px);
 }
 
-/* Cartas 3D completamente modernizadas */
+/* Cartas 3D - Solución simplificada y robusta */
 .cartas-3d-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
   margin: 3rem 0;
   perspective: 1000px;
-  /* Mantener altura consistente durante animaciones */
-  align-items: stretch;
-  /* Fijar altura de filas para evitar movimientos */
-  grid-auto-rows: 400px;
 }
 
 .carta-3d {
   height: 400px;
   position: relative;
   border-radius: var(--radius-xl);
-  transition: transform var(--transition-normal);
-  will-change: transform;
-  /* Resetear cualquier transformación previa */
-  transform: none;
   cursor: pointer;
-  /* Asegurar estado inicial limpio */
-  perspective: 1000px;
+  /* Sin transformaciones complejas iniciales */
+  transform: none;
 }
 
 .carta-3d-inner {
   position: relative;
   width: 100%;
   height: 100%;
-  text-align: center;
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.6s ease;
   transform-style: preserve-3d;
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);
-  /* Estado inicial correcto - SIEMPRE mostrar el frente */
-  transform: rotateY(0deg) !important;
 }
 
-/* Solo cuando esté explícitamente volteada */
+/* Estado normal - mostrar frente */
+.carta-3d-inner {
+  transform: rotateY(0deg);
+}
+
+/* Estado volteado - mostrar reverso */
 .carta-3d.flipped .carta-3d-inner {
-  transform: rotateY(180deg) !important;
-}
-
-/* Evitar movimientos bruscos durante el flip */
-.carta-3d.flipping {
-  pointer-events: none;
+  transform: rotateY(180deg);
 }
 
 .carta-3d-front,
@@ -380,32 +369,27 @@ h3 {
   backface-visibility: hidden;
   border-radius: var(--radius-xl);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem;
 }
 
 .carta-3d-front {
   background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
   color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 2rem;
-  position: relative;
-  /* Asegurar que el frente esté visible inicialmente */
-  transform: rotateY(0deg);
+  /* Frente visible por defecto */
   z-index: 2;
-  /* Forzar visibilidad inicial */
-  opacity: 1;
 }
 
-.carta-3d-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
-  pointer-events: none;
+.carta-3d-back {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transform: rotateY(180deg);
+  padding: 1.5rem;
+  overflow-y: auto;
+  /* Reverso oculto por defecto */
+  z-index: 1;
 }
 
 .carta-3d:nth-child(1) .carta-3d-front {
@@ -420,28 +404,28 @@ h3 {
   background: linear-gradient(135deg, var(--warning-color), #d97706);
 }
 
-.carta-3d-back {
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  transform: rotateY(180deg);
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  /* Asegurar que el reverso esté oculto inicialmente */
-  z-index: 1;
-  /* Oculto por defecto */
-  opacity: 0;
+/* Efecto de brillo sutil en el frente */
+.carta-3d-front::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+  pointer-events: none;
 }
 
-/* Cuando la carta está volteada, mostrar el reverso */
-.carta-3d.flipped .carta-3d-back {
-  opacity: 1;
+/* Efecto hover para las cartas */
+.carta-3d:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
 }
 
-/* Cuando la carta está volteada, ocultar el frente */
-.carta-3d.flipped .carta-3d-front {
-  opacity: 0;
+.carta-3d.flipped:hover {
+  transform: none;
+  box-shadow: var(--shadow-lg);
 }
 
 .carta-3d-icon {
@@ -676,14 +660,10 @@ footer {
   .cartas-3d-container {
     grid-template-columns: 1fr;
     gap: 1.5rem;
-    /* Asegurar que las cartas mantengan su posición en móvil */
-    grid-auto-rows: 350px;
   }
   
   .carta-3d {
     height: 350px;
-    /* Evitar que las cartas se muevan en móvil */
-    align-self: start;
   }
   
   .carta-3d-front,
