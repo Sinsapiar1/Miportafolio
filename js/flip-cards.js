@@ -21,6 +21,7 @@
   function setupCardEvents(card) {
     const flipButton = card.querySelector('.ver-ejemplos-btn');
     const backButton = card.querySelector('.volver-btn');
+    const cardBack = card.querySelector('.carta-3d-back');
     
     // Evento para voltear la carta
     if (flipButton) {
@@ -52,20 +53,76 @@
       }
     });
 
-    // Efecto hover sutil (solo si no está volteada)
-    card.addEventListener('mouseenter', function() {
-      if (!card.classList.contains('flipped')) {
-        card.style.transform = 'translateY(-5px)';
-        card.style.boxShadow = '0 20px 40px rgba(0,0,0,0.2)';
+    // Mejorar eventos táctiles para móviles
+    let touchStartY = 0;
+    let touchStartX = 0;
+    let touchStartTime = 0;
+    let hasMoved = false;
+    
+    // Detectar si es un toque rápido vs scroll
+    card.addEventListener('touchstart', function(e) {
+      touchStartY = e.touches[0].clientY;
+      touchStartX = e.touches[0].clientX;
+      touchStartTime = Date.now();
+      hasMoved = false;
+    }, { passive: true });
+    
+    card.addEventListener('touchmove', function(e) {
+      const currentY = e.touches[0].clientY;
+      const currentX = e.touches[0].clientX;
+      const deltaY = Math.abs(currentY - touchStartY);
+      const deltaX = Math.abs(currentX - touchStartX);
+      
+      // Si se movió más de 15px, considerarlo como scroll
+      if (deltaY > 15 || deltaX > 15) {
+        hasMoved = true;
       }
-    });
+    }, { passive: true });
+    
+    card.addEventListener('touchend', function(e) {
+      const touchEndTime = Date.now();
+      const deltaTime = touchEndTime - touchStartTime;
+      
+      // Solo flip si es un toque rápido, no hubo movimiento significativo y no fue en contenido scrolleable
+      if (!hasMoved && deltaTime < 300) {
+        const target = e.target;
+        const isScrollableContent = target.closest('.carta-3d-back .ejemplos-container');
+        const isButton = target.closest('.ver-ejemplos-btn, .volver-btn');
+        
+        // No hacer flip si se tocó un botón o contenido scrolleable
+        if (!isScrollableContent && !isButton) {
+          if (card.classList.contains('flipped')) {
+            flipCard(card, false);
+          } else {
+            flipCard(card, true);
+          }
+        }
+      }
+    }, { passive: true });
 
-    card.addEventListener('mouseleave', function() {
-      if (!card.classList.contains('flipped')) {
-        card.style.transform = 'translateY(0)';
-        card.style.boxShadow = 'var(--shadow-lg)';
-      }
-    });
+    // Efecto hover sutil (solo para dispositivos no táctiles)
+    if (!('ontouchstart' in window)) {
+      card.addEventListener('mouseenter', function() {
+        if (!card.classList.contains('flipped')) {
+          card.style.transform = 'translateY(-5px)';
+          card.style.boxShadow = '0 20px 40px rgba(0,0,0,0.2)';
+        }
+      });
+
+      card.addEventListener('mouseleave', function() {
+        if (!card.classList.contains('flipped')) {
+          card.style.transform = 'translateY(0)';
+          card.style.boxShadow = 'var(--shadow-lg)';
+        }
+      });
+    }
+    
+    // Mejorar scroll en el contenido de la carta volteada
+    if (cardBack) {
+      cardBack.addEventListener('touchmove', function(e) {
+        e.stopPropagation();
+      }, { passive: true });
+    }
   }
 
   function flipCard(card, shouldFlip) {

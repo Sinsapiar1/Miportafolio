@@ -63,6 +63,7 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  touch-action: pan-y; /* Permitir scroll vertical en todo el documento */
 }
 
 /* Header moderno con glassmorphism */
@@ -660,15 +661,52 @@ footer {
   .cartas-3d-container {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+    touch-action: pan-y; /* Permitir scroll vertical */
   }
   
   .carta-3d {
     height: 350px;
+    touch-action: pan-y; /* Permitir scroll vertical */
   }
   
   .carta-3d-front,
   .carta-3d-back {
     padding: 1.5rem;
+  }
+  
+  /* Mejorar el área de scroll en las cartas volteadas */
+  .carta-3d-back {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+  }
+  
+  .ejemplos-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+  }
+  
+  /* Indicador visual para scroll */
+  .carta-3d-back::after {
+    content: '';
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: pulseScroll 2s infinite;
+  }
+  
+  @keyframes pulseScroll {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.1); }
   }
   
   .social-links {
@@ -793,10 +831,17 @@ button:focus-visible,
 
 .touch-device .carta-3d {
   transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  touch-action: pan-y; /* Permite scroll vertical */
 }
 
 .touch-device .carta-3d:active {
   transform: scale(0.98);
+}
+
+/* Permitir scroll en el contenido de las cartas */
+.carta-3d-back {
+  touch-action: pan-y; /* Permite scroll vertical en el contenido */
+  -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
 }
 
 /* Mejorar área de toque en botones */
@@ -805,6 +850,35 @@ button:focus-visible,
   min-height: 44px;
   min-width: 44px;
   touch-action: manipulation;
+}
+
+/* Asegurar que el contenedor principal permita scroll */
+.cartas-3d-container {
+  touch-action: pan-y;
+}
+
+/* Mejorar scroll en móviles */
+@media (max-width: 768px) {
+  .carta-3d-back {
+    max-height: 300px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) transparent;
+  }
+  
+  /* Scroll indicator para móviles */
+  .carta-3d-back::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .carta-3d-back::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .carta-3d-back::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 2px;
+  }
 }
 
 /* Optimizaciones para pantallas de alta densidad */
