@@ -3,43 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Portafolio</title>
+    <meta name="description" content="Portafolio profesional de desarrollo web, aplicaciones móviles con AppSheet, Firebase y automatización con Python. Especialista en UX/UI y soluciones digitales innovadoras.">
+    <meta name="keywords" content="desarrollo web, AppSheet, Firebase, Python, automatización, UX/UI, aplicaciones móviles, menús digitales">
+    <meta name="author" content="Jaime Pivet">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Mi Portafolio - Desarrollo Web y Aplicaciones">
+    <meta property="og:description" content="Especialista en desarrollo web moderno, aplicaciones móviles y automatización de procesos">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sinsapiar1.github.io">
+    
+    <!-- Preconnect para optimización -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <title>Mi Portafolio - Desarrollo Web Moderno</title>
     <link rel="stylesheet" href="css/styles.css">
-    <!-- Importar Three.js desde CDN -->
+    
+    <!-- Preload crítico -->
+    <link rel="preload" href="css/styles.css" as="style">
+    <link rel="preload" href="js/flip-cards.js" as="script">
 </head>
 <body>
-    <header>
+    <!-- Skip to main content para accesibilidad -->
+    <a href="#main-content" class="skip-link" style="position: absolute; left: -9999px; z-index: 999; padding: 8px 16px; background: var(--primary-color); color: white; text-decoration: none;">Saltar al contenido principal</a>
+    
+    <header role="banner">
         <h1 id="main-title" class="glow-text">Mi Portafolio</h1>
-        <nav>
+        <nav role="navigation" aria-label="Navegación principal">
             <ul>
-                <li><a href="#proyectos">Proyectos</a></li>
-                <li><a href="#sobre-mi">Sobre Mí</a></li>
-                <li><a href="#contacto">Contacto</a></li>
+                <li><a href="#proyectos" aria-label="Ver mis proyectos">Proyectos</a></li>
+                <li><a href="#sobre-mi" aria-label="Conocer más sobre mí">Sobre Mí</a></li>
+                <li><a href="#contacto" aria-label="Información de contacto">Contacto</a></li>
             </ul>
         </nav>
     </header>
 
-    <main>
+    <main id="main-content" role="main">
         <!-- Sección de Proyectos con espacio para Galería 3D -->
-        <section id="proyectos" class="glassmorphism">
-            <h2 class="gradient-text">Mis Proyectos</h2>
-            <!-- Aquí se insertará la galería 3D -->
+        <section id="proyectos" class="glassmorphism" aria-labelledby="proyectos-heading">
+            <h2 id="proyectos-heading" class="gradient-text">Mis Proyectos</h2>
             
            <!-- Sección de tarjetas 3D con efecto flip -->
-<div class="cartas-3d-container">
+<div class="cartas-3d-container" role="region" aria-label="Tarjetas interactivas de proyectos">
     <!-- Carta 1: Menús Digitales -->
-    <div class="carta-3d">
+    <article class="carta-3d" tabindex="0" role="button" aria-label="Tarjeta de Menús Digitales - Presiona Enter para ver ejemplos">
       <div class="carta-3d-inner">
         <!-- Frente de la carta -->
         <div class="carta-3d-front">
-          <div class="carta-3d-icon">🍽️</div>
+          <div class="carta-3d-icon" role="img" aria-label="Icono de restaurante">🍽️</div>
           <div class="carta-3d-title">Menús Digitales</div>
           <div class="carta-3d-description">
             Transforma la experiencia de tus clientes con menús digitales interactivos y visualmente impactantes. 
             Diseño personalizado con imágenes de alta calidad y animaciones sutiles que resaltan tus platos estrella.
           </div>
           <div class="carta-3d-footer">
-            <span class="ver-ejemplos-btn">Ver ejemplos →</span>
+            <button class="ver-ejemplos-btn" aria-label="Ver ejemplos de menús digitales">Ver ejemplos →</button>
           </div>
         </div>
         
@@ -48,34 +71,34 @@
           <div class="carta-3d-back-title">Ejemplos de Menús Digitales</div>
           <div class="ejemplos-container">
             <div class="ejemplo-item">
-              <img src="assets/img/menu-restaurantes/menu-ejemplo-1.jpg" alt="Menú ejemplo 1">
+              <img src="assets/img/menu-restaurantes/menu-ejemplo-1.jpg" alt="Captura de pantalla del menú gourmet interactivo" loading="lazy">
               <h4>Menú Gourmet Interactivo</h4>
               <p>Menú con animaciones sutiles que resaltan los platos destacados y opciones de filtrado por categorías.</p>
             </div>
             <div class="ejemplo-item">
-              <img src="assets/img/menu-restaurantes/menu-ejemplo-1.jpg" alt="Menú ejemplo 2">
+              <img src="assets/img/menu-restaurantes/menu-ejemplo-1.jpg" alt="Captura de pantalla del menú digital con código QR" loading="lazy">
               <h4>Menú Digital con QR</h4>
               <p>Sistema de menú accesible por código QR, con posibilidad de actualización en tiempo real.</p>
             </div>
           </div>
-          <a href="#" class="volver-btn">← Volver</a>
+          <button class="volver-btn" aria-label="Volver a la vista principal de la tarjeta">← Volver</button>
         </div>
       </div>
-    </div>
+    </article>
     
     <!-- Carta 2: Aplicaciones Móviles -->
-    <div class="carta-3d">
+    <article class="carta-3d" tabindex="0" role="button" aria-label="Tarjeta de Aplicaciones Móviles - Presiona Enter para ver ejemplos">
       <div class="carta-3d-inner">
         <!-- Frente de la carta -->
         <div class="carta-3d-front">
-          <div class="carta-3d-icon">📱</div>
+          <div class="carta-3d-icon" role="img" aria-label="Icono de teléfono móvil">📱</div>
           <div class="carta-3d-title">Apps Móviles</div>
           <div class="carta-3d-description">
             Desarrollo de aplicaciones móviles personalizadas con AppSheet que se adaptan a tus necesidades operativas. 
             Desde gestión de almacenes hasta formularios dinámicos con registro fotográfico.
           </div>
           <div class="carta-3d-footer">
-            <span class="ver-ejemplos-btn">Ver ejemplos →</span>
+            <button class="ver-ejemplos-btn" aria-label="Ver ejemplos de aplicaciones móviles">Ver ejemplos →</button>
           </div>
         </div>
         
@@ -84,34 +107,34 @@
           <div class="carta-3d-back-title">Ejemplos de Apps Móviles</div>
           <div class="ejemplos-container">
             <div class="ejemplo-item">
-              <img src="assets/img/apps-appsheet/app-ejemplo-1.png" alt="App ejemplo 1">
+              <img src="assets/img/apps-appsheet/app-ejemplo-1.png" alt="Captura de pantalla de la aplicación de inventario móvil" loading="lazy">
               <h4>Inventario Móvil</h4>
               <p>Aplicación para gestión de almacén con escáner de código de barras y registro fotográfico de productos.</p>
             </div>
             <div class="ejemplo-item">
-              <img src="assets/img/apps-appsheet/app-ejemplo-1.png" alt="App ejemplo 2">
+              <img src="assets/img/apps-appsheet/app-ejemplo-1.png" alt="Captura de pantalla del sistema de pedidos" loading="lazy">
               <h4>Sistema de Pedidos</h4>
               <p>App para la gestión y seguimiento de pedidos con notificaciones en tiempo real y dashboard de análisis.</p>
             </div>
           </div>
-          <a href="#" class="volver-btn">← Volver</a>
+          <button class="volver-btn" aria-label="Volver a la vista principal de la tarjeta">← Volver</button>
         </div>
       </div>
-    </div>
+    </article>
     
     <!-- Carta 3: Aplicaciones Web -->
-    <div class="carta-3d">
+    <article class="carta-3d" tabindex="0" role="button" aria-label="Tarjeta de Aplicaciones Web - Presiona Enter para ver ejemplos">
       <div class="carta-3d-inner">
         <!-- Frente de la carta -->
         <div class="carta-3d-front">
-          <div class="carta-3d-icon">🌐</div>
+          <div class="carta-3d-icon" role="img" aria-label="Icono de globo web">🌐</div>
           <div class="carta-3d-title">Apps Web</div>
           <div class="carta-3d-description">
             Construyo aplicaciones web escalables y con un diseño impactante gracias a la potencia de Firebase. 
             Funcionalidades completas y estilos visuales que marcan la diferencia en la experiencia de usuario.
           </div>
           <div class="carta-3d-footer">
-            <span class="ver-ejemplos-btn">Ver ejemplos →</span>
+            <button class="ver-ejemplos-btn" aria-label="Ver ejemplos de aplicaciones web">Ver ejemplos →</button>
           </div>
         </div>
         
@@ -120,93 +143,93 @@
           <div class="carta-3d-back-title">Ejemplos de Apps Web</div>
           <div class="ejemplos-container">
             <div class="ejemplo-item">
-              <img src="assets/img/web-firebase/web-ejemplo-1.png" alt="Web ejemplo 1">
+              <img src="assets/img/web-firebase/web-ejemplo-1.png" alt="Captura de pantalla de la aplicación de control de almacén" loading="lazy">
               <h4>Control de Almacén</h4>
               <p>Aplicación web con Firebase para gestión de inventario y control de almacén en tiempo real.</p>
-              <a href="https://sinsapiar1.github.io/control-almacen/" target="_blank" style="color: #1976d2; font-size: 12px;">Ver demo</a>
+              <a href="https://sinsapiar1.github.io/control-almacen/" target="_blank" rel="noopener noreferrer" aria-label="Ver demostración en vivo del control de almacén" style="color: #1976d2; font-size: 12px;">Ver demo</a>
             </div>
             <div class="ejemplo-item">
-              <img src="assets/img/web-firebase/web-ejemplo-1.png" alt="Web ejemplo 2">
+              <img src="assets/img/web-firebase/web-ejemplo-1.png" alt="Captura de pantalla del dashboard de análisis" loading="lazy">
               <h4>Dashboard de Análisis</h4>
               <p>Panel de control para visualización y análisis de datos con gráficos interactivos.</p>
             </div>
           </div>
-          <a href="#" class="volver-btn">← Volver</a>
+          <button class="volver-btn" aria-label="Volver a la vista principal de la tarjeta">← Volver</button>
         </div>
       </div>
-    </div>
+    </article>
   </div>
 
             <div class="categoria-proyectos">
                 <h3>Sistematizaciones (Google & Office)</h3>
                 <div class="grid-proyectos">
-                    <div class="proyecto float-animation">
+                    <article class="proyecto float-animation">
                         <h4>Automatización de Reportes en Google Sheets</h4>
                         <p>Automatización de procesos con Google Apps Script, conectando datos entre diferentes plataformas y generando reportes personalizados. Optimiza el tiempo y reduce errores en tus operaciones diarias.</p>
-                    </div>
+                    </article>
                 </div>
             </div>
 
             <div class="categoria-proyectos">
                 <h3>Programas en Python</h3>
                 <div class="grid-proyectos">
-                    <div class="proyecto float-animation">
+                    <article class="proyecto float-animation">
                         <h4>Herramienta de Análisis de Datos con Python</h4>
                         <p>Desarrollo de soluciones para el análisis de grandes volúmenes de datos utilizando Python con librerías como Pandas, NumPy y Matplotlib. Visualización de datos que facilita la toma de decisiones estratégicas.</p>
-                    </div>
+                    </article>
                 </div>
             </div>
         </section>
 
         <!-- Sección de Blogs -->
-        <section id="blogs" class="glassmorphism">
-            <h2 class="gradient-text">Blogs y Creación de Contenido</h2>
+        <section id="blogs" class="glassmorphism" aria-labelledby="blogs-heading">
+            <h2 id="blogs-heading" class="gradient-text">Blogs y Creación de Contenido</h2>
             <div class="grid-blogs">
-                <div class="blog-proyecto float-animation">
+                <article class="blog-proyecto float-animation">
                     <h3>Blogs de Presentación con Integración a Redes Sociales</h3>
                     <p>Desarrollo blogs visualmente atractivos, ideales para presentar proyectos o eventos. Incorporo galerías de fotografías impactantes y los vinculo estratégicamente con tus perfiles en redes sociales para ampliar su alcance.</p>
-                </div>
-                <div class="blog-proyecto float-animation">
+                </article>
+                <article class="blog-proyecto float-animation">
                     <h3>Blogs Personales para Promoción de Productos</h3>
                     <p>Creo blogs personales diseñados para destacar productos de tiendas en línea. A través de contenido relevante y persuasivo, busco conectar con la audiencia y fomentar las ventas.</p>
-                </div>
+                </article>
             </div>
         </section>
 
         <!-- Sección de Páginas Web -->
-        <section id="paginas" class="glassmorphism">
-            <h2 class="gradient-text">Mis Páginas Web</h2>
+        <section id="paginas" class="glassmorphism" aria-labelledby="paginas-heading">
+            <h2 id="paginas-heading" class="gradient-text">Mis Páginas Web</h2>
             <div class="sub-seccion">
                 <h3>Páginas Estáticas</h3>
                 <div class="grid-paginas">
-                    <div class="pagina float-animation">
+                    <article class="pagina float-animation">
                         <h4>Promoción a Taxi Móvil</h4>
                         <p>Página web estática creada para promocionar Taxi Móvil.</p>
-                        <a href="https://sinsapiar1.github.io/Taximovil/" target="_blank">Ver Página</a>
-                    </div>
-                    <div class="pagina float-animation">
+                        <a href="https://sinsapiar1.github.io/Taximovil/" target="_blank" rel="noopener noreferrer" aria-label="Ver página de Taxi Móvil en nueva ventana">Ver Página</a>
+                    </article>
+                    <article class="pagina float-animation">
                         <h4>Publicidad a Mi Perro</h4>
                         <p>Mi primer blog personal, una página estática dedicada a mi perro.</p>
-                        <a href="https://sinsapiar1.github.io/miprimerblog/" target="_blank">Ver Página</a>
-                    </div>
+                        <a href="https://sinsapiar1.github.io/miprimerblog/" target="_blank" rel="noopener noreferrer" aria-label="Ver mi primer blog en nueva ventana">Ver Página</a>
+                    </article>
                 </div>
             </div>
         
             <div class="sub-seccion">
                 <h3>Páginas Dinámicas</h3>
                 <div class="grid-paginas">
-                    <div class="pagina float-animation">
+                    <article class="pagina float-animation">
                         <h4>Control de Almacén (Firebase)</h4>
                         <p>Aplicación web dinámica desarrollada con Firebase para la gestión de inventario y control de almacén.</p>
-                        <a href="https://sinsapiar1.github.io/Almacen/" target="_blank">Ver Página</a>
-                    </div>
+                        <a href="https://sinsapiar1.github.io/Almacen/" target="_blank" rel="noopener noreferrer" aria-label="Ver aplicación de control de almacén en nueva ventana">Ver Página</a>
+                    </article>
                 </div>
             </div>
         </section>
 
         <!-- Sección Sobre Mí con espacio para visualización 3D de habilidades -->
-        <section id="sobre-mi" class="glassmorphism">
-            <h2 class="gradient-text">Sobre Mí</h2>
+        <section id="sobre-mi" class="glassmorphism" aria-labelledby="sobre-mi-heading">
+            <h2 id="sobre-mi-heading" class="gradient-text">Sobre Mí</h2>
             <!-- Aquí se insertará la visualización 3D de habilidades -->
             
             <p>Soy un profesional versátil con más de 7 años de experiencia en logística, apasionado por la optimización y la innovación. Mi expertise abarca la creación de soluciones digitales integrales, desde el diseño de menús interactivos y el desarrollo de aplicaciones móviles personalizadas con AppSheet, hasta la construcción de aplicaciones web dinámicas con Firebase.</p>
@@ -217,38 +240,32 @@
         </section>
 
         <!-- Sección de Contacto -->
-        <section id="contacto" class="glassmorphism">
-            <h2 class="gradient-text">Contacto</h2>
+        <section id="contacto" class="glassmorphism" aria-labelledby="contacto-heading">
+            <h2 id="contacto-heading" class="gradient-text">Contacto</h2>
             <p>¡No dudes en ponerte en contacto para llevar tus ideas al siguiente nivel!</p>
-            <div class="social-links">
-                <a href="https://github.com/sinsapiar1" target="_blank" class="neumorphism">
-                    <img src="assets/img/social-icons/github.png" alt="GitHub">
+            <div class="social-links" role="list" aria-label="Enlaces a redes sociales">
+                <a href="https://github.com/sinsapiar1" target="_blank" rel="noopener noreferrer" class="neumorphism" role="listitem" aria-label="Visitar mi perfil de GitHub">
+                    <img src="assets/img/social-icons/github.png" alt="Icono de GitHub">
                 </a>
-                <a href="https://www.instagram.com/jaimepivet/" target="_blank" class="neumorphism">
-                    <img src="assets/img/social-icons/instagram.png" alt="Instagram">
+                <a href="https://www.instagram.com/jaimepivet/" target="_blank" rel="noopener noreferrer" class="neumorphism" role="listitem" aria-label="Visitar mi perfil de Instagram">
+                    <img src="assets/img/social-icons/instagram.png" alt="Icono de Instagram">
                 </a>
             </div>
-            <p>También puedes enviarme un correo a: <a href="mailto:jaime.pivet@gmail.com" class="glow-text">jaime.pivet@gmail.com</a></p>
+            <p>También puedes enviarme un correo a: <a href="mailto:jaime.pivet@gmail.com" class="glow-text" aria-label="Enviar correo electrónico a jaime.pivet@gmail.com">jaime.pivet@gmail.com</a></p>
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2025 Mi Portafolio | Diseño y Desarrollo 3D</p>
+    <footer role="contentinfo">
+        <p>&copy; 2025 Mi Portafolio | Diseño y Desarrollo Moderno</p>
     </footer>
 
-    <!-- Scripts -->
+    <!-- Scripts optimizados -->
     <script type="module" src="js/three-background.js"></script>
     <script type="module" src="js/project-gallery-3d.js"></script>
     <script type="module" src="js/skills-bubbles.js"></script>
     
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="js/flip-cards.js"></script>
-
     <script type="module" src="js/script.js"></script>
-
-    
-    
-    
 </body>
 </html>

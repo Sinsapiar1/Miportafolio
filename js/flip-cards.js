@@ -1,149 +1,297 @@
-// Efecto de flip para las cartas 3D
-(function() {
-  // Función para inicializar las cartas
-  function initFlipCards() {
-    // Seleccionar todos los botones de "Ver ejemplos"
-    const verEjemplosButtons = document.querySelectorAll('.ver-ejemplos-btn');
-    // Seleccionar todos los botones de "Volver"
-    const volverButtons = document.querySelectorAll('.volver-btn');
-    // Seleccionar todas las cartas
-    const cartas = document.querySelectorAll('.carta-3d');
+// Módulo moderno para cartas 3D con efectos optimizados
+class ModernFlipCards {
+  constructor() {
+    this.cards = [];
+    this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.init();
+  }
+
+  init() {
+    // Esperar a que el DOM esté listo
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => this.setupCards());
+    } else {
+      this.setupCards();
+    }
+  }
+
+  setupCards() {
+    const cardElements = document.querySelectorAll('.carta-3d');
     
-    // Función de volteo segura
-    function flipCard(carta, flip = true) {
-      // Garantizar que la función funcione incluso si los selectores no existen
-      try {
-        if (flip) {
-          carta.classList.add('flipped');
-        } else {
-          carta.classList.remove('flipped');
+    cardElements.forEach((card, index) => {
+      this.initializeCard(card, index);
+    });
+
+    // Animación de entrada escalonada
+    this.animateCardsEntrance(cardElements);
+  }
+
+  initializeCard(cardElement, index) {
+    const cardData = {
+      element: cardElement,
+      inner: cardElement.querySelector('.carta-3d-inner'),
+      front: cardElement.querySelector('.carta-3d-front'),
+      back: cardElement.querySelector('.carta-3d-back'),
+      flipButton: cardElement.querySelector('.ver-ejemplos-btn'),
+      backButton: cardElement.querySelector('.volver-btn'),
+      isFlipped: false,
+      mouseMoveHandler: null,
+      mouseLeaveHandler: null
+    };
+
+    // Configurar eventos de flip
+    this.setupFlipEvents(cardData);
+    
+    // Configurar efectos de hover 3D
+    if (!this.isReducedMotion) {
+      this.setup3DHoverEffects(cardData);
+    }
+
+    // Configurar observador de intersección para animaciones
+    this.setupIntersectionObserver(cardData);
+
+    this.cards.push(cardData);
+  }
+
+  setupFlipEvents(cardData) {
+    const { flipButton, backButton, element } = cardData;
+
+    if (flipButton) {
+      flipButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.flipCard(cardData, true);
+      });
+    }
+
+    if (backButton) {
+      backButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.flipCard(cardData, false);
+      });
+    }
+
+    // Agregar soporte para teclado (accesibilidad)
+    [flipButton, backButton].forEach(button => {
+      if (button) {
+        button.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            button.click();
+          }
+        });
+      }
+    });
+  }
+
+  setup3DHoverEffects(cardData) {
+    const { element, inner } = cardData;
+    
+    const mouseMoveHandler = this.throttle((e) => {
+      if (cardData.isFlipped) return;
+      
+      const rect = element.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      
+      const mouseX = e.clientX - centerX;
+      const mouseY = e.clientY - centerY;
+      
+      // Reducir la intensidad del efecto 3D para un look más moderno
+      const rotateX = (mouseY / rect.height) * -8;
+      const rotateY = (mouseX / rect.width) * 8;
+      
+      if (inner) {
+        inner.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(0)`;
+        inner.style.transformStyle = 'preserve-3d';
+      }
+    }, 16); // 60fps
+
+    const mouseLeaveHandler = () => {
+      if (cardData.isFlipped || !inner) return;
+      
+      inner.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0)';
+    };
+
+    element.addEventListener('mousemove', mouseMoveHandler);
+    element.addEventListener('mouseleave', mouseLeaveHandler);
+    
+    // Guardar referencias para cleanup
+    cardData.mouseMoveHandler = mouseMoveHandler;
+    cardData.mouseLeaveHandler = mouseLeaveHandler;
+  }
+
+  setupIntersectionObserver(cardData) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
         }
-      } catch (error) {
-        console.error('Error al voltear la carta:', error);
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '50px'
+    });
+
+    observer.observe(cardData.element);
+  }
+
+  flipCard(cardData, shouldFlip) {
+    const { element, inner } = cardData;
+    
+    if (!inner) return;
+
+    cardData.isFlipped = shouldFlip;
+    
+    if (shouldFlip) {
+      element.classList.add('flipped');
+      // Limpiar efectos de hover durante el flip
+      inner.style.transform = 'rotateY(180deg)';
+    } else {
+      element.classList.remove('flipped');
+      inner.style.transform = 'rotateY(0deg)';
+    }
+
+    // Agregar vibración táctil en dispositivos compatibles
+    if ('vibrate' in navigator && shouldFlip) {
+      navigator.vibrate(50);
+    }
+
+    // Emitir evento personalizado para tracking
+    element.dispatchEvent(new CustomEvent('cardFlipped', {
+      detail: { isFlipped: shouldFlip, cardData }
+    }));
+  }
+
+  animateCardsEntrance(cards) {
+    cards.forEach((card, index) => {
+      // Configurar estado inicial
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(30px) scale(0.95)';
+      card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+      
+      // Animar entrada con delay escalonado
+      setTimeout(() => {
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0) scale(1)';
+      }, 150 + (index * 100));
+    });
+  }
+
+  // Función throttle para optimizar performance
+  throttle(func, limit) {
+    let inThrottle;
+    return function() {
+      const args = arguments;
+      const context = this;
+      if (!inThrottle) {
+        func.apply(context, args);
+        inThrottle = true;
+        setTimeout(() => inThrottle = false, limit);
       }
     }
-    
-    // Añadir evento click a los botones "Ver ejemplos"
-    verEjemplosButtons.forEach(button => {
-      button.addEventListener('click', function(e) {
-        // Evitar que el evento se propague
-        e.preventDefault();
-        e.stopPropagation();
-        
-        // Obtener la carta padre
-        const carta = this.closest('.carta-3d');
-        
-        // Voltear la carta
-        if (carta) {
-          flipCard(carta, true);
-        }
-      });
-    });
-    
-    // Añadir evento click a los botones "Volver"
-    volverButtons.forEach(button => {
-      button.addEventListener('click', function(e) {
-        // Evitar que el evento se propague
-        e.preventDefault();
-        e.stopPropagation();
-        
-        // Obtener la carta padre
-        const carta = this.closest('.carta-3d');
-        
-        // Devolver la carta
-        if (carta) {
-          flipCard(carta, false);
-        }
-      });
-    });
-    
-    // Efecto de movimiento 3D
-    cartas.forEach(carta => {
-      let mouseX = 0, mouseY = 0;
-      
-      function handleMouseMove(e) {
-        // Solo aplicar efecto si la carta no está volteada
-        if (carta.classList.contains('flipped')) return;
-        
-        const bounds = carta.getBoundingClientRect();
-        
-        // Calcular posición relativa del mouse
-        mouseX = e.clientX - bounds.left;
-        mouseY = e.clientY - bounds.top;
-        
-        const xRotation = 10 * ((mouseY - bounds.height/2) / bounds.height);
-        const yRotation = -10 * ((mouseX - bounds.width/2) / bounds.width);
-        
-        // Buscar el elemento interno de la carta
-        const inner = carta.querySelector('.carta-3d-inner');
-        
-        if (inner && !carta.classList.contains('flipped')) {
-          inner.style.transform = `
-            rotateX(${xRotation}deg)
-            rotateY(${yRotation}deg)
-          `;
-        }
-      }
-      
-      function resetStyles() {
-        // Solo resetear si la carta no está volteada
-        if (carta.classList.contains('flipped')) return;
-        
-        const inner = carta.querySelector('.carta-3d-inner');
-        if (inner) {
-          inner.style.transform = '';
-        }
-      }
-      
-      // Añadir event listeners solo si existen los elementos
-      carta.addEventListener('mousemove', handleMouseMove);
-      carta.addEventListener('mouseleave', resetStyles);
-    });
-    
-    // Efecto de entrada animada
-    cartas.forEach((carta, index) => {
-      carta.style.opacity = '0';
-      carta.style.transform = 'translateY(20px)';
-      
-      setTimeout(() => {
-        carta.style.opacity = '1';
-        carta.style.transform = 'translateY(0)';
-      }, 200 + (index * 100));
-    });
   }
-  
-  // Esperar a que el DOM esté completamente cargado
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initFlipCards);
-  } else {
-    initFlipCards();
-  }
-})();
 
-// Detección de soporte 3D
-function checkSupport3D() {
-  const supports3d = ('perspective' in document.documentElement.style) || 
-                    ('webkitPerspective' in document.documentElement.style) || 
-                    ('MozPerspective' in document.documentElement.style);
-  
-  if (!supports3d) {
-    // Fallback para navegadores sin soporte 3D
-    document.querySelectorAll('.carta-3d-inner').forEach(inner => {
-      inner.style.transformStyle = 'flat';
+  // Función para limpiar eventos (útil para SPA)
+  destroy() {
+    this.cards.forEach(cardData => {
+      const { element, mouseMoveHandler, mouseLeaveHandler } = cardData;
+      if (mouseMoveHandler) {
+        element.removeEventListener('mousemove', mouseMoveHandler);
+      }
+      if (mouseLeaveHandler) {
+        element.removeEventListener('mouseleave', mouseLeaveHandler);
+      }
     });
-    
-    // Modificar transición para ser simple
-    document.querySelectorAll('.carta-3d.flipped .carta-3d-front').forEach(front => {
-      front.style.display = 'none';
-    });
-    
-    document.querySelectorAll('.carta-3d.flipped .carta-3d-back').forEach(back => {
-      back.style.display = 'flex';
-    });
+    this.cards = [];
   }
-  
-  return supports3d;
+
+  // Método público para agregar nuevas cartas dinámicamente
+  addCard(cardElement) {
+    const index = this.cards.length;
+    this.initializeCard(cardElement, index);
+  }
 }
 
-// Ejecutar detección de soporte 3D
-checkSupport3D();
+// Detección de soporte 3D mejorada
+function detect3DSupport() {
+  const testElement = document.createElement('div');
+  const prefixes = ['', '-webkit-', '-moz-', '-ms-', '-o-'];
+  
+  for (let prefix of prefixes) {
+    testElement.style.cssText = `${prefix}transform-style: preserve-3d;`;
+    if (testElement.style.transformStyle === 'preserve-3d') {
+      return true;
+    }
+  }
+  
+  return false;
+}
+
+// Fallback para navegadores sin soporte 3D
+function setupFallback() {
+  const cards = document.querySelectorAll('.carta-3d');
+  
+  cards.forEach(card => {
+    const inner = card.querySelector('.carta-3d-inner');
+    const front = card.querySelector('.carta-3d-front');
+    const back = card.querySelector('.carta-3d-back');
+    
+    if (inner) {
+      inner.style.transformStyle = 'flat';
+    }
+    
+    // Usar opacity toggle en lugar de 3D flip
+    card.addEventListener('click', () => {
+      if (card.classList.contains('flipped')) {
+        front.style.opacity = '1';
+        back.style.opacity = '0';
+        card.classList.remove('flipped');
+      } else {
+        front.style.opacity = '0';
+        back.style.opacity = '1';
+        card.classList.add('flipped');
+      }
+    });
+  });
+}
+
+// Inicialización principal
+(() => {
+  const has3DSupport = detect3DSupport();
+  
+  if (has3DSupport) {
+    // Inicializar cartas modernas con efectos 3D
+    window.modernFlipCards = new ModernFlipCards();
+  } else {
+    // Usar fallback para navegadores antiguos
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupFallback);
+    } else {
+      setupFallback();
+    }
+  }
+
+  // Escuchar cambios en preferencias de movimiento reducido
+  const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  mediaQuery.addEventListener('change', (e) => {
+    if (window.modernFlipCards && e.matches) {
+      // Deshabilitar efectos 3D si el usuario prefiere movimiento reducido
+      window.modernFlipCards.cards.forEach(cardData => {
+        const { element, mouseMoveHandler, mouseLeaveHandler } = cardData;
+        if (mouseMoveHandler) {
+          element.removeEventListener('mousemove', mouseMoveHandler);
+        }
+        if (mouseLeaveHandler) {
+          element.removeEventListener('mouseleave', mouseLeaveHandler);
+        }
+      });
+    }
+  });
+})();
+
+// Exportar para uso en módulos
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = ModernFlipCards;
+}
