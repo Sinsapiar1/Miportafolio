@@ -53,56 +53,28 @@
       }
     });
 
-    // Mejorar eventos táctiles para móviles
-    let touchStartY = 0;
-    let touchStartX = 0;
-    let touchStartTime = 0;
-    let hasMoved = false;
+    // Para móviles: SOLO permitir flip a través de botones
+    const isMobile = 'ontouchstart' in window;
     
-    // Detectar si es un toque rápido vs scroll
-    card.addEventListener('touchstart', function(e) {
-      touchStartY = e.touches[0].clientY;
-      touchStartX = e.touches[0].clientX;
-      touchStartTime = Date.now();
-      hasMoved = false;
-    }, { passive: true });
-    
-    card.addEventListener('touchmove', function(e) {
-      const currentY = e.touches[0].clientY;
-      const currentX = e.touches[0].clientX;
-      const deltaY = Math.abs(currentY - touchStartY);
-      const deltaX = Math.abs(currentX - touchStartX);
-      
-      // Si se movió más de 15px, considerarlo como scroll
-      if (deltaY > 15 || deltaX > 15) {
-        hasMoved = true;
-      }
-    }, { passive: true });
-    
-    card.addEventListener('touchend', function(e) {
-      const touchEndTime = Date.now();
-      const deltaTime = touchEndTime - touchStartTime;
-      
-      // Solo flip si es un toque rápido, no hubo movimiento significativo
-      if (!hasMoved && deltaTime < 300) {
+    if (isMobile) {
+      // En móviles, deshabilitar flip táctil completamente
+      // Solo los botones pueden hacer flip
+      console.log('Modo móvil: flip solo por botones');
+    } else {
+      // En desktop, mantener el flip por clic en la carta
+      card.addEventListener('click', function(e) {
         const target = e.target;
         const isButton = target.closest('.ver-ejemplos-btn, .volver-btn');
         
-        // Si la carta está volteada, solo permitir flip desde el botón volver
-        if (card.classList.contains('flipped')) {
-          // En carta volteada, solo el botón volver puede hacer flip
-          if (isButton && target.closest('.volver-btn')) {
+        if (!isButton) {
+          if (card.classList.contains('flipped')) {
             flipCard(card, false);
-          }
-          // Todo lo demás debe permitir scroll
-        } else {
-          // En carta normal, cualquier toque que no sea botón puede hacer flip
-          if (!isButton) {
+          } else {
             flipCard(card, true);
           }
         }
-      }
-    }, { passive: true });
+      });
+    }
 
     // Efecto hover sutil (solo para dispositivos no táctiles)
     if (!('ontouchstart' in window)) {

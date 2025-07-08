@@ -696,21 +696,25 @@ footer {
   
   /* Indicador visual para scroll */
   .carta-3d-back::after {
-    content: '';
+    content: '⬇️ Desliza para ver más';
     position: absolute;
     bottom: 10px;
-    right: 10px;
-    width: 20px;
-    height: 20px;
-    background: var(--primary-color);
-    border-radius: 50%;
-    opacity: 0.3;
-    animation: pulseScroll 2s infinite;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    opacity: 0.7;
+    animation: pulseScroll 3s infinite;
+    pointer-events: none;
+    z-index: 10;
   }
   
   @keyframes pulseScroll {
-    0%, 100% { opacity: 0.3; transform: scale(1); }
-    50% { opacity: 0.6; transform: scale(1.1); }
+    0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+    50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
   }
   
   .social-links {
@@ -867,27 +871,63 @@ button:focus-visible,
   touch-action: pan-y;
 }
 
+/* Configuración específica para móviles */
+@media (max-width: 768px) {
+  /* Asegurar scroll libre en todo el documento */
+  html, body {
+    touch-action: pan-y !important;
+    overflow-y: auto !important;
+  }
+  
+  /* Deshabilitar cualquier interferencia en las cartas */
+  .carta-3d {
+    touch-action: pan-y !important;
+    pointer-events: auto !important;
+  }
+  
+  /* Contenido scrolleable sin restricciones */
+  .carta-3d-back,
+  .carta-3d-back *,
+  .ejemplos-container,
+  .ejemplos-container * {
+    touch-action: pan-y !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
 /* Mejorar scroll en móviles */
 @media (max-width: 768px) {
   .carta-3d-back {
     max-height: 300px;
-    overflow-y: auto;
+    overflow-y: scroll !important;
     scrollbar-width: thin;
     scrollbar-color: var(--primary-color) transparent;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
   }
   
   /* Scroll indicator para móviles */
   .carta-3d-back::-webkit-scrollbar {
-    width: 4px;
+    width: 6px;
   }
   
   .carta-3d-back::-webkit-scrollbar-track {
-    background: transparent;
+    background: rgba(0,0,0,0.1);
+    border-radius: 3px;
   }
   
   .carta-3d-back::-webkit-scrollbar-thumb {
     background: var(--primary-color);
-    border-radius: 2px;
+    border-radius: 3px;
+  }
+  
+  /* Hacer toda la carta volteada scrolleable */
+  .carta-3d.flipped {
+    touch-action: pan-y !important;
+  }
+  
+  .carta-3d.flipped * {
+    touch-action: pan-y !important;
   }
 }
 
