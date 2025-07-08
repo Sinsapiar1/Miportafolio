@@ -7,12 +7,47 @@ class ModernFlipCards {
   }
 
   init() {
+    // Forzar estado inicial inmediatamente
+    this.forceInitialState();
+    
     // Esperar a que el DOM esté listo
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => this.setupCards());
     } else {
       this.setupCards();
     }
+  }
+
+  forceInitialState() {
+    // Ejecutar inmediatamente para evitar flash de contenido incorrecto
+    const cards = document.querySelectorAll('.carta-3d');
+    cards.forEach(card => {
+      const inner = card.querySelector('.carta-3d-inner');
+      const front = card.querySelector('.carta-3d-front');
+      const back = card.querySelector('.carta-3d-back');
+      
+      // Forzar estado inicial
+      card.classList.remove('flipped');
+      if (inner) {
+        inner.style.transform = 'rotateY(0deg)';
+        inner.style.transition = 'none'; // Sin transición inicial
+      }
+      if (front) {
+        front.style.opacity = '1';
+        front.style.zIndex = '2';
+      }
+      if (back) {
+        back.style.opacity = '0';
+        back.style.zIndex = '1';
+      }
+      
+      // Restaurar transiciones después de un frame
+      requestAnimationFrame(() => {
+        if (inner) {
+          inner.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+        }
+      });
+    });
   }
 
   setupCards() {
@@ -39,6 +74,9 @@ class ModernFlipCards {
       mouseLeaveHandler: null
     };
 
+    // Asegurar estado inicial correcto (doble verificación)
+    this.resetCardState(cardData);
+
     // Configurar eventos de flip
     this.setupFlipEvents(cardData);
     
@@ -51,6 +89,24 @@ class ModernFlipCards {
     this.setupIntersectionObserver(cardData);
 
     this.cards.push(cardData);
+  }
+
+  resetCardState(cardData) {
+    const { element, inner, front, back } = cardData;
+    
+    element.classList.remove('flipped', 'flipping');
+    
+    if (inner) {
+      inner.style.transform = 'rotateY(0deg)';
+    }
+    if (front) {
+      front.style.opacity = '1';
+      front.style.zIndex = '2';
+    }
+    if (back) {
+      back.style.opacity = '0';
+      back.style.zIndex = '1';
+    }
   }
 
   setupFlipEvents(cardData) {
@@ -102,7 +158,7 @@ class ModernFlipCards {
       const rotateX = (mouseY / rect.height) * -8;
       const rotateY = (mouseX / rect.width) * 8;
       
-      if (inner) {
+      if (inner && !cardData.isFlipped) {
         inner.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(0)`;
         inner.style.transformStyle = 'preserve-3d';
       }
@@ -111,7 +167,7 @@ class ModernFlipCards {
     const mouseLeaveHandler = () => {
       if (cardData.isFlipped || !inner) return;
       
-      inner.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0)';
+      inner.style.transform = 'rotateY(0deg)';
     };
 
     element.addEventListener('mousemove', mouseMoveHandler);
@@ -138,7 +194,7 @@ class ModernFlipCards {
   }
 
   flipCard(cardData, shouldFlip) {
-    const { element, inner } = cardData;
+    const { element, inner, front, back } = cardData;
     
     if (!inner) return;
 
@@ -152,15 +208,14 @@ class ModernFlipCards {
     requestAnimationFrame(() => {
       if (shouldFlip) {
         element.classList.add('flipped');
+        inner.style.transform = 'rotateY(180deg)';
+        if (front) front.style.opacity = '0';
+        if (back) back.style.opacity = '1';
       } else {
         element.classList.remove('flipped');
-      }
-      
-      // Limpiar efectos de hover durante el flip
-      if (shouldFlip) {
-        inner.style.transform = 'rotateY(180deg)';
-      } else {
         inner.style.transform = 'rotateY(0deg)';
+        if (front) front.style.opacity = '1';
+        if (back) back.style.opacity = '0';
       }
     });
 
@@ -182,7 +237,12 @@ class ModernFlipCards {
 
   animateCardsEntrance(cards) {
     cards.forEach((card, index) => {
-      // Configurar estado inicial
+      // Configurar estado inicial correcto
+      const inner = card.querySelector('.carta-3d-inner');
+      if (inner) {
+        inner.style.transform = 'rotateY(0deg)';
+      }
+      
       card.style.opacity = '0';
       card.style.transform = 'translateY(30px) scale(0.95)';
       card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -271,6 +331,33 @@ function setupFallback() {
       }
     });
   });
+}
+
+// Función de inicialización inmediata
+function forceCardsInitialState() {
+  const cards = document.querySelectorAll('.carta-3d');
+  cards.forEach(card => {
+    const inner = card.querySelector('.carta-3d-inner');
+    const front = card.querySelector('.carta-3d-front');
+    const back = card.querySelector('.carta-3d-back');
+    
+    // Forzar estado inicial sin transiciones
+    card.classList.remove('flipped');
+    if (inner) inner.style.transform = 'rotateY(0deg)';
+    if (front) {
+      front.style.opacity = '1';
+      front.style.zIndex = '2';
+    }
+    if (back) {
+      back.style.opacity = '0';
+      back.style.zIndex = '1';
+    }
+  });
+}
+
+// Ejecutar inmediatamente si las cartas ya existen
+if (document.querySelector('.carta-3d')) {
+  forceCardsInitialState();
 }
 
 // Inicialización principal

@@ -331,7 +331,7 @@ h3 {
   margin: 3rem 0;
   perspective: 1000px;
   /* Mantener altura consistente durante animaciones */
-  align-items: start;
+  align-items: stretch;
   /* Fijar altura de filas para evitar movimientos */
   grid-auto-rows: 400px;
 }
@@ -342,8 +342,11 @@ h3 {
   border-radius: var(--radius-xl);
   transition: transform var(--transition-normal);
   will-change: transform;
-  /* Mantener posición fija durante el flip */
-  transform-style: preserve-3d;
+  /* Resetear cualquier transformación previa */
+  transform: none;
+  cursor: pointer;
+  /* Asegurar estado inicial limpio */
+  perspective: 1000px;
 }
 
 .carta-3d-inner {
@@ -355,25 +358,18 @@ h3 {
   transform-style: preserve-3d;
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);
-  /* Evitar que el flip afecte el layout */
-  backface-visibility: hidden;
+  /* Estado inicial correcto - SIEMPRE mostrar el frente */
+  transform: rotateY(0deg) !important;
 }
 
+/* Solo cuando esté explícitamente volteada */
 .carta-3d.flipped .carta-3d-inner {
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) !important;
 }
 
 /* Evitar movimientos bruscos durante el flip */
 .carta-3d.flipping {
   pointer-events: none;
-  /* Mantener posición fija durante la animación */
-  position: relative;
-  z-index: 1;
-}
-
-.carta-3d.flipping .carta-3d-inner {
-  /* Suavizar la transición */
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .carta-3d-front,
@@ -394,6 +390,11 @@ h3 {
   justify-content: space-between;
   padding: 2rem;
   position: relative;
+  /* Asegurar que el frente esté visible inicialmente */
+  transform: rotateY(0deg);
+  z-index: 2;
+  /* Forzar visibilidad inicial */
+  opacity: 1;
 }
 
 .carta-3d-front::before {
@@ -427,6 +428,20 @@ h3 {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  /* Asegurar que el reverso esté oculto inicialmente */
+  z-index: 1;
+  /* Oculto por defecto */
+  opacity: 0;
+}
+
+/* Cuando la carta está volteada, mostrar el reverso */
+.carta-3d.flipped .carta-3d-back {
+  opacity: 1;
+}
+
+/* Cuando la carta está volteada, ocultar el frente */
+.carta-3d.flipped .carta-3d-front {
+  opacity: 0;
 }
 
 .carta-3d-icon {
@@ -461,6 +476,7 @@ h3 {
   transition: all var(--transition-normal);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  border: none;
 }
 
 .ver-ejemplos-btn:hover {
@@ -531,6 +547,8 @@ h3 {
   font-weight: 600;
   transition: all var(--transition-normal);
   box-shadow: var(--shadow-md);
+  border: none;
+  cursor: pointer;
 }
 
 .volver-btn:hover {
