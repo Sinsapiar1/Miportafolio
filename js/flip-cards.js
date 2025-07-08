@@ -142,16 +142,32 @@ class ModernFlipCards {
     
     if (!inner) return;
 
+    // Prevenir múltiples flips simultáneos
+    if (element.classList.contains('flipping')) return;
+    
+    element.classList.add('flipping');
     cardData.isFlipped = shouldFlip;
     
-    if (shouldFlip) {
-      element.classList.add('flipped');
+    // Aplicar el flip de manera suave
+    requestAnimationFrame(() => {
+      if (shouldFlip) {
+        element.classList.add('flipped');
+      } else {
+        element.classList.remove('flipped');
+      }
+      
       // Limpiar efectos de hover durante el flip
-      inner.style.transform = 'rotateY(180deg)';
-    } else {
-      element.classList.remove('flipped');
-      inner.style.transform = 'rotateY(0deg)';
-    }
+      if (shouldFlip) {
+        inner.style.transform = 'rotateY(180deg)';
+      } else {
+        inner.style.transform = 'rotateY(0deg)';
+      }
+    });
+
+    // Remover clase de flipping después de la animación
+    setTimeout(() => {
+      element.classList.remove('flipping');
+    }, 600); // Duración de la transición
 
     // Agregar vibración táctil en dispositivos compatibles
     if ('vibrate' in navigator && shouldFlip) {

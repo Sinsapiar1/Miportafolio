@@ -330,6 +330,10 @@ h3 {
   gap: 2rem;
   margin: 3rem 0;
   perspective: 1000px;
+  /* Mantener altura consistente durante animaciones */
+  align-items: start;
+  /* Fijar altura de filas para evitar movimientos */
+  grid-auto-rows: 400px;
 }
 
 .carta-3d {
@@ -338,6 +342,8 @@ h3 {
   border-radius: var(--radius-xl);
   transition: transform var(--transition-normal);
   will-change: transform;
+  /* Mantener posición fija durante el flip */
+  transform-style: preserve-3d;
 }
 
 .carta-3d-inner {
@@ -345,14 +351,29 @@ h3 {
   width: 100%;
   height: 100%;
   text-align: center;
-  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   transform-style: preserve-3d;
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);
+  /* Evitar que el flip afecte el layout */
+  backface-visibility: hidden;
 }
 
 .carta-3d.flipped .carta-3d-inner {
   transform: rotateY(180deg);
+}
+
+/* Evitar movimientos bruscos durante el flip */
+.carta-3d.flipping {
+  pointer-events: none;
+  /* Mantener posición fija durante la animación */
+  position: relative;
+  z-index: 1;
+}
+
+.carta-3d.flipping .carta-3d-inner {
+  /* Suavizar la transición */
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .carta-3d-front,
@@ -637,10 +658,14 @@ footer {
   .cartas-3d-container {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+    /* Asegurar que las cartas mantengan su posición en móvil */
+    grid-auto-rows: 350px;
   }
   
   .carta-3d {
     height: 350px;
+    /* Evitar que las cartas se muevan en móvil */
+    align-self: start;
   }
   
   .carta-3d-front,
