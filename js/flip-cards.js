@@ -22,13 +22,19 @@
     const flipButton = card.querySelector('.ver-ejemplos-btn');
     const backButton = card.querySelector('.volver-btn');
     const cardBack = card.querySelector('.carta-3d-back');
+    const isMobile = window.innerWidth <= 768;
     
-    // Evento para voltear la carta
+    // Evento para voltear la carta o abrir modal
     if (flipButton) {
       flipButton.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        flipCard(card, true);
+        
+        if (isMobile) {
+          openMobileModal(card);
+        } else {
+          flipCard(card, true);
+        }
       });
     }
     
@@ -54,13 +60,9 @@
     });
 
     // Para móviles: SOLO permitir flip a través de botones
-    const isMobile = 'ontouchstart' in window;
+    const isTouchDevice = 'ontouchstart' in window;
     
-    if (isMobile) {
-      // En móviles, deshabilitar flip táctil completamente
-      // Solo los botones pueden hacer flip
-      console.log('Modo móvil: flip solo por botones');
-    } else {
+    if (!isTouchDevice) {
       // En desktop, mantener el flip por clic en la carta
       card.addEventListener('click', function(e) {
         const target = e.target;
@@ -135,6 +137,92 @@
       card.style.transform = 'translateY(0)';
     }, 100 + (index * 150));
   }
+
+  function openMobileModal(card) {
+    const cardBack = card.querySelector('.carta-3d-back');
+    const cardTitle = card.querySelector('.carta-3d-title').textContent;
+    const cardContent = cardBack.innerHTML;
+    
+    // Crear modal si no existe
+    let modal = document.getElementById('mobile-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'mobile-modal';
+      modal.className = 'mobile-modal';
+      modal.innerHTML = `
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 id="modal-title"></h3>
+            <button class="modal-close" onclick="closeMobileModal()">&times;</button>
+          </div>
+          <div class="modal-body" id="modal-body">
+          </div>
+          <div class="modal-scrollbar">
+            <div class="modal-scrollbar-thumb"></div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+    
+    // Llenar contenido
+    document.getElementById('modal-title').textContent = cardTitle;
+    document.getElementById('modal-body').innerHTML = cardContent;
+    
+    // Mostrar modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+    // Configurar scrollbar personalizada
+    setupCustomScrollbar();
+    
+    // Cerrar modal al tocar fuera
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        closeMobileModal();
+      }
+    });
+  }
+
+  function closeMobileModal() {
+    const modal = document.getElementById('mobile-modal');
+    if (modal) {
+      modal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+  }
+
+  function setupCustomScrollbar() {
+    const modalBody = document.getElementById('modal-body');
+    const scrollbar = document.querySelector('.modal-scrollbar');
+    const thumb = document.querySelector('.modal-scrollbar-thumb');
+    
+    if (!modalBody || !scrollbar || !thumb) return;
+    
+    function updateScrollbar() {
+      const scrollHeight = modalBody.scrollHeight;
+      const clientHeight = modalBody.clientHeight;
+      const scrollTop = modalBody.scrollTop;
+      
+      if (scrollHeight <= clientHeight) {
+        scrollbar.style.display = 'none';
+        return;
+      }
+      
+      scrollbar.style.display = 'block';
+      const thumbHeight = Math.max(20, (clientHeight / scrollHeight) * scrollbar.offsetHeight);
+      const thumbTop = (scrollTop / scrollHeight) * scrollbar.offsetHeight;
+      
+      thumb.style.height = thumbHeight + 'px';
+      thumb.style.top = thumbTop + 'px';
+    }
+    
+    modalBody.addEventListener('scroll', updateScrollbar);
+    updateScrollbar();
+  }
+
+  // Hacer funciones globales
+  window.closeMobileModal = closeMobileModal;
 
   // Inicializar cuando el DOM esté listo
   if (document.readyState === 'loading') {
